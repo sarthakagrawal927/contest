@@ -1,5 +1,4 @@
 // dump of random things
-
 // op enum
 enum RSEnum {
     FooFn(fn() -> i32),
@@ -7,6 +6,32 @@ enum RSEnum {
     Foo2(Option<i32>), // Option is another enum, has None & Some(T)
     Bar(String),
     Blast(Vec<String>),
+}
+
+// type Result<V,E> {
+//     Err(E),
+//     Ok(V)
+// }
+
+fn error_me(throw: bool) -> Result<(), usize> {
+    if throw {
+        return Err(7);
+    }
+    return Ok(());
+}
+
+enum Option2<T> {
+    None,
+    Some(T),
+}
+
+impl<T> Option2<T> {
+    fn is_some(&self) -> bool {
+        return match self {
+            Option2::None => false,
+            Option2::Some(_) => true,
+        };
+    }
 }
 
 fn bar() -> i32 {
