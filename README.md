@@ -1,7 +1,6 @@
 # Contest
 
 Started off from a course. Current contenders:
-- C++
 - Rust
 - Golang
 - TS
