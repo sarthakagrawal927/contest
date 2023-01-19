@@ -1,5 +1,5 @@
 import { Opts } from "./opts"
-import path from "path";
+import * as path from "path";
 
 export enum Operation {
     Print,
@@ -36,7 +36,7 @@ function getArgs(opts: Opts): string[] {
 
     const operation = getOperation(opts)
     if (operation === Operation.Print) {
-        if (opts.args.length > 0) {
+        if (opts.args.length > 1) {
             throw new Error(`expected 0 or 1 args but got ${opts.args.length}`)
         }
         return opts.args
@@ -49,7 +49,7 @@ function getArgs(opts: Opts): string[] {
     if (opts.args.length !== 2) {
         throw new Error(`expected 1 args but got ${opts.args.length - 1}`)
     }
-    return opts.args
+    return opts.args.slice(1)
 }
 
 function getOperation(opts: Opts): Operation {

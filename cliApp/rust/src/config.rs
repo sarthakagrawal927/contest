@@ -28,7 +28,7 @@ impl TryFrom<Opts> for Config {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub enum Operation {
     Print(Option<String>),
     Add(String, String),
@@ -72,7 +72,7 @@ impl TryFrom<Vec<String>> for Operation {
                 value.len() - 1
             ));
         }
-        return Ok(Operation::Print(None));
+        return Ok(Operation::Print(Some(value[0].clone())));
     }
 }
 
@@ -81,7 +81,7 @@ fn get_config(config: Option<PathBuf>) -> Result<PathBuf> {
         return Ok(v);
     }
 
-    let loc = std::env::var("XDG_CONFIG_HOME").context("unable to get xdg_config_home")?;
+    let loc = std::env::current_dir().context("unable to get xdg_config_home")?;
     let mut loc = PathBuf::from(loc);
     loc.push("projector");
     loc.push("projector.json");
@@ -92,5 +92,62 @@ fn get_pwd(pwd: Option<PathBuf>) -> Result<PathBuf> {
     if let Some(v) = pwd {
         return Ok(v);
     }
-    return Ok(std::env::current_dir().context("unable to get xdg_config_home")?);
+    return Ok(std::env::current_dir().context("unable to get current director")?);
+}
+
+#[cfg(test)]
+mod test {
+    use super::Config;
+    use crate::{config::Operation, opts::Opts};
+    use anyhow::{Ok, Result};
+
+    #[test]
+    fn test_print_all() -> Result<()> {
+        let opts: Config = Opts {
+            args: vec![],
+            pwd: None,
+            config: None,
+        }
+        .try_into()?;
+        assert_eq!(opts.operation, Operation::Print(None));
+        Ok(())
+    }
+    #[test]
+    fn test_print_key() -> Result<()> {
+        let opts: Config = Opts {
+            args: vec!["hi".to_string()],
+            pwd: None,
+            config: None,
+        }
+        .try_into()?;
+        assert_eq!(opts.operation, Operation::Print(Some(String::from("hi"))));
+        Ok(())
+    }
+
+    #[test]
+    fn test_add_key_value() -> Result<()> {
+        let opts: Config = Opts {
+            args: vec!["add".to_string(), "hi".to_string(), "boo".to_string()],
+            pwd: None,
+            config: None,
+        }
+        .try_into()?;
+        assert_eq!(
+            opts.operation,
+            Operation::Add(String::from("hi"), "boo".to_string())
+        );
+        Ok(())
+    }
+
+    #[test]
+    fn test_remove_key_value() -> Result<()> {
+        let opts: Config = Opts {
+            args: vec!["rm".to_string(), "hi".to_string()],
+            pwd: None,
+            config: None,
+        }
+        .try_into()?;
+        assert_eq!(opts.operation, Operation::Remove(String::from("hi")));
+        Ok(())
+    }
 }
