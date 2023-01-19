@@ -1,3 +1,4 @@
+import config from "./config";
 import getOpts from "./opts";
 
-console.log(getOpts())
+console.log(config(getOpts()))
