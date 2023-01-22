@@ -1,4 +1,4 @@
-import cli from "command-line-args";
+import * as cli from "command-line-args";
 
 export type Opts = {
     args?: string[],

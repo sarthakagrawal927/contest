@@ -59,7 +59,7 @@ function getOperation(opts: Opts): Operation {
     return Operation.Print;
 }
 
-export default function config(opts: Opts): Config {
+export default function getCompleteConfig(opts: Opts): Config {
     return {
         pwd: getPwd(opts),
         config: getConfig(opts),
