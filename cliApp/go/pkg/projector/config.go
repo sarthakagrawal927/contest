@@ -60,7 +60,7 @@ func getArgs(opts *Opts) ([]string, error) {
 	operation := getOperation(opts)
 	if operation == Add {
 		if len(opts.Args) != 3 {
-			return nil, fmt.Errorf("Add require 2, but got received %v", len(opts.Args)-1)
+			return nil, fmt.Errorf("add require 2, but got received %v", len(opts.Args)-1)
 		}
 		return opts.Args[1:], nil
 	}
