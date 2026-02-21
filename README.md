@@ -1,5 +1,8 @@
 # Contest
 
+![AI Generated](https://ai-percentage-pin.vercel.app/api/ai-percentage?value=20)
+![AI PRs Welcome](https://ai-percentage-pin.vercel.app/api/ai-prs?welcome=yes)
+
 Contest is a language-comparison playground where the same CLI tool (`projector`) is implemented in Go, Rust, and TypeScript.
 
 ## Core Idea
